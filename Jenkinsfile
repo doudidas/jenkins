@@ -1,9 +1,9 @@
 pipeline {
   agent any
   stages {
-    stage('') {
+    stage('check files') {
       steps {
-        sleep 8
+        sh 'ls'
       }
     }
   }
