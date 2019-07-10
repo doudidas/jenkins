@@ -1,9 +1,9 @@
 pipeline {
   agent any
   stages {
-    stage('check files') {
+    stage('getToken') {
       steps {
-        sh 'ls'
+        sh 'python getToken.py'
       }
     }
   }
