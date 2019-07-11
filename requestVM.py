@@ -1,13 +1,125 @@
 import sys
 import requests
-import urllib3
+import time
 
+# Convert json to Python syntax
+null = None
+false = False
+true = True
+
+# Get token from arg
 token = sys.argv[1]
+
 url = "https://cava-n-80-154.eng.vmware.com/catalog-service/api/consumer/entitledCatalogItems/8b0c1cca-2678-470d-ab27-05f7c8a9fc21/requests"
 
-querystring = {"businessGroupId":"b3a2dc51-5267-410c-87f3-ddfefc1645a7","requestedFor":"api-user@vsphere.local"}
+querystring = {
+    "businessGroupId": "b3a2dc51-5267-410c-87f3-ddfefc1645a7",
+    "requestedFor": "api-user@vsphere.local"
+}
 
-payload = "{\n    \"type\": \"com.vmware.vcac.catalog.domain.request.CatalogItemProvisioningRequest\",\n    \"catalogItemId\": \"8b0c1cca-2678-470d-ab27-05f7c8a9fc21\",\n    \"requestedFor\": \"etopin@vsphere.local\",\n    \"businessGroupId\": \"b3a2dc51-5267-410c-87f3-ddfefc1645a7\",\n    \"description\": null,\n    \"reasons\": null,\n    \"data\": {\n        \"_leaseDays\": 1,\n        \"_number_of_instances\": 1,\n        \"centos\": {\n            \"componentTypeId\": \"com.vmware.csp.component.cafe.composition\",\n            \"componentId\": null,\n            \"classId\": \"Blueprint.Component.Declaration\",\n            \"typeFilter\": \"Centos*centos\",\n            \"data\": {\n                \"_cluster\": 1,\n                \"_hasChildren\": false,\n                \"cpu\": 1,\n                \"datacenter_location\": null,\n                \"description\": null,\n                \"disks\": [\n                    {\n                        \"componentTypeId\": \"com.vmware.csp.iaas.blueprint.service\",\n                        \"componentId\": null,\n                        \"classId\": \"Infrastructure.Compute.Machine.MachineDisk\",\n                        \"typeFilter\": null,\n                        \"data\": {\n                            \"capacity\": 1,\n                            \"custom_properties\": null,\n                            \"id\": 1561394194720,\n                            \"initial_location\": \"\",\n                            \"is_clone\": true,\n                            \"label\": \"Hard disk 1\",\n                            \"storage_reservation_policy\": \"\",\n                            \"userCreated\": false,\n                            \"volumeId\": 0\n                        }\n                    },\n                    {\n                        \"componentTypeId\": \"com.vmware.csp.iaas.blueprint.service\",\n                        \"componentId\": null,\n                        \"classId\": \"Infrastructure.Compute.Machine.MachineDisk\",\n                        \"typeFilter\": null,\n                        \"data\": {\n                            \"capacity\": 10,\n                            \"id\": 1561394057515,\n                            \"initial_location\": \"\",\n                            \"is_clone\": false,\n                            \"label\": \"\",\n                            \"storage_reservation_policy\": \"\",\n                            \"userCreated\": true,\n                            \"volumeId\": 1\n                        }\n                    }\n                ],\n                \"display_location\": false,\n                \"guest_customization_specification\": null,\n                \"machine_prefix\": null,\n                \"max_network_adapters\": -1,\n                \"max_per_user\": 0,\n                \"max_volumes\": 60,\n                \"memory\": 128,\n                \"nics\": [\n                    {\n                        \"componentTypeId\": \"com.vmware.csp.iaas.blueprint.service\",\n                        \"componentId\": null,\n                        \"classId\": \"Infrastructure.Compute.Machine.Nic\",\n                        \"typeFilter\": null,\n                        \"data\": {\n                            \"address\": \"\",\n                            \"assignment_type\": \"DHCP\",\n                            \"id\": 0,\n                            \"load_balancing\": \"\",\n                            \"network\": null,\n                            \"network_profile\": null\n                        }\n                    }\n                ],\n                \"os_arch\": \"x86_64\",\n                \"os_distribution\": null,\n                \"os_type\": \"Linux\",\n                \"os_version\": null,\n                \"ovfAuthNeeded\": false,\n                \"ovf_proxy_endpoint\": null,\n                \"ovf_url\": null,\n                \"ovf_url_pwd\": null,\n                \"ovf_url_username\": null,\n                \"ovf_use_proxy\": false,\n                \"property_groups\": null,\n                \"reservation_policy\": null,\n                \"security_groups\": [],\n                \"security_tags\": [],\n                \"snapshot_name\": null,\n                \"source_machine_external_snapshot\": null,\n                \"source_machine_vmsnapshot\": null,\n                \"storage\": 11\n            }\n        }\n    }\n}"
+payload = """{
+    "type": "com.vmware.vcac.catalog.domain.request.CatalogItemProvisioningRequest",
+    "catalogItemId": "8b0c1cca-2678-470d-ab27-05f7c8a9fc21",
+    "requestedFor": "etopin@vsphere.local",
+    "businessGroupId": "b3a2dc51-5267-410c-87f3-ddfefc1645a7",
+    "description": null,
+    "reasons": null,
+    "data": {
+        "_leaseDays": 1,
+        "_number_of_instances": 1,
+        "centos": {
+            "componentTypeId": "com.vmware.csp.component.cafe.composition",
+            "componentId": null,
+            "classId": "Blueprint.Component.Declaration",
+            "typeFilter": "Centos*centos",
+            "data": {
+                "_cluster": 1,
+                "_hasChildren": false,
+                "cpu": 1,
+                "datacenter_location": null,
+                "description": null,
+                "disks": [
+                    {
+                        "componentTypeId": "com.vmware.csp.iaas.blueprint.service",
+                        "componentId": null,
+                        "classId": "Infrastructure.Compute.Machine.MachineDisk",
+                        "typeFilter": null,
+                        "data": {
+                            "capacity": 1,
+                            "custom_properties": null,
+                            "id": 1561394194720,
+                            "initial_location": "",
+                            "is_clone": true,
+                            "label": "Hard disk 1",
+                            "storage_reservation_policy": "",
+                            "userCreated": false,
+                            "volumeId": 0
+                        }
+                    },
+                    {
+                        "componentTypeId": "com.vmware.csp.iaas.blueprint.service",
+                        "componentId": null,
+                        "classId": "Infrastructure.Compute.Machine.MachineDisk",
+                        "typeFilter": null,
+                        "data": {
+                            "capacity": 10,
+                            "id": 1561394057515,
+                            "initial_location": "",
+                            "is_clone": false,
+                            "label": "",
+                            "storage_reservation_policy": "",
+                            "userCreated": true,
+                            "volumeId": 1
+                        }
+                    }
+                ],
+                "display_location": false,
+                "guest_customization_specification": null,
+                "machine_prefix": null,
+                "max_network_adapters": -1,
+                "max_per_user": 0,
+                "max_volumes": 60,
+                "memory": 128,
+                "nics": [
+                    {
+                        "componentTypeId": "com.vmware.csp.iaas.blueprint.service",
+                        "componentId": null,
+                        "classId": "Infrastructure.Compute.Machine.Nic",
+                        "typeFilter": null,
+                        "data": {
+                            "address": "",
+                            "assignment_type": "DHCP",
+                            "id": 0,
+                            "load_balancing": "",
+                            "network": null,
+                            "network_profile": null
+                        }
+                    }
+                ],
+                "os_arch": "x86_64",
+                "os_distribution": null,
+                "os_type": "Linux",
+                "os_version": null,
+                "ovfAuthNeeded": false,
+                "ovf_proxy_endpoint": null,
+                "ovf_url": null,
+                "ovf_url_pwd": null,
+                "ovf_url_username": null,
+                "ovf_use_proxy": false,
+                "property_groups": null,
+                "reservation_policy": null,
+                "security_groups": [],
+                "security_tags": [],
+                "snapshot_name": null,
+                "source_machine_external_snapshot": null,
+                "source_machine_vmsnapshot": null,
+                "storage": 11
+            }
+        }
+    }
+}
+"""
+
 headers = {
     'Accept': "application/json",
     'Authorization': "Bearer " + token,
@@ -19,6 +131,20 @@ headers = {
     'Connection': "keep-alive"
     }
 
-response = requests.request("POST", url, data=payload, headers=headers, params=querystring, verify=False)
+r = requests.request("POST", url, data=payload, headers=headers, params=querystring, verify=False)
 
-print(response.text)
+locationURL = r.headers['Location']
+
+executionStatus = ""
+while executionStatus != "STOPPED":
+    r = requests.request("GET", locationURL, headers=headers, verify=False)
+    body = r.json()
+    executionStatus = body['executionStatus']
+    phase = body["phase"]
+    print(phase)
+    time.sleep(2)
+
+if phase == "FAILED":
+    raise Exception('FAILED: ' + body['requestCompletion']['completionDetails'])
+
+print(r.text)
