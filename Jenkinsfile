@@ -7,7 +7,7 @@ pipeline {
   stages {
     stage('getToken') {
       steps {
-        token = sh 'python getToken.py'
+        def token = sh 'python getToken.py'
       }
     }
     stage('provision VM') {
