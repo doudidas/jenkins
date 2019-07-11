@@ -7,8 +7,7 @@ pipeline {
   stages {
     stage('getToken') {
       steps {
-        sh "python getToken.py"
-        // sh(returnStdout: true, script: "python getToken.py").trim()
+        sh 'python getToken.py'
       }
     }
     stage('provision VM') {
@@ -16,5 +15,8 @@ pipeline {
         sh "python requestVM.py ${token}"
       }
     }
+  }
+  parameters {
+    string(name: 'token', defaultValue: '')
   }
 }
