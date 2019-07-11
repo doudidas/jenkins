@@ -3,7 +3,9 @@ pipeline {
   stages {
     stage('getToken') {
       steps {
-        sh 'python getToken.py'
+        sh '''ls
+python getToken.py'''
+        sleep 1
       }
     }
   }
