@@ -7,7 +7,7 @@ pipeline {
   stages {
     stage('getToken') {
       steps {
-        token = sh(returnStdout: true, script: "python getToken.py").trim()
+        sh(returnStdout: true, script: "python getToken.py").trim()
       }
     }
     stage('provision VM') {
