@@ -4,16 +4,19 @@ import json
 import urllib3
 
 # Get token, catalogID and businessGroupID from arg
-token             = sys.argv[1]
-catalogID         = sys.arv[2]
+pathToPayloadFile = sys.argv[1]
+catalogID         = sys.argv[2]
 businessGroupID   = sys.argv[3]
-pathToPayloadFile = sys.argv[4]
 
 url = "https://cava-n-80-154.eng.vmware.com/catalog-service/api/consumer/entitledCatalogItems/" + catalogID + "/requests"
 
 querystring = {
     "businessGroupId": businessGroupID,
 }
+
+# Get Token
+with open(".tokenID") as token_file:
+    token = token_file.read()
 
 # Get request body from a JSON file
 with open(pathToPayloadFile) as json_file:
