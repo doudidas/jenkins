@@ -23,7 +23,8 @@ response = requests.request("POST", url, data=json.dumps(
 j = response.json()
 
 if 'id' in j :
-    f = open(".tokenID", "w")
-    f.write(j["id"])   
+    # f = open(".tokenID", "w")
+    # f.write(j["id"])
+    print((j["id"]))
 else:
     raise Exception("FAILED: " + json.dumps(j))

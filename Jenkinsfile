@@ -3,8 +3,7 @@ pipeline {
   stages {
     stage('getToken') {
       steps {
-        sh 'python getToken.py'
-        env.token = readFile(file: '.tokenID')
+        sh 'token=$(python getToken.py'
       }
     }
     stage('provision VM') {
@@ -12,8 +11,5 @@ pipeline {
         sh 'echo ${token}'
       }
     }
-  }
-  environment {
-    token = ''
   }
 }
