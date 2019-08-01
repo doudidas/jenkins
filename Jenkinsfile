@@ -1,14 +1,10 @@
-
 pipeline {
   agent any
-    environment { 
-        token = ''
-    }
   stages {
     stage('getToken') {
       steps {
         sh 'python getToken.py'
-        def token = readFile('.tokenID').trim()
+        readFile(file: '.tokenID', encoding: 'token')
       }
     }
     stage('provision VM') {
@@ -16,5 +12,8 @@ pipeline {
         sh "echo ${token}"
       }
     }
+  }
+  environment {
+    token = ''
   }
 }
