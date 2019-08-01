@@ -1,23 +1,4 @@
-import sys
-import requests
-import time
-
-# Convert json to Python syntax
-null = None
-false = False
-true = True
-
-# Get token from arg
-token = sys.argv[1]
-
-url = "https://cava-n-80-154.eng.vmware.com/catalog-service/api/consumer/entitledCatalogItems/8b0c1cca-2678-470d-ab27-05f7c8a9fc21/requests"
-
-querystring = {
-    "businessGroupId": "b3a2dc51-5267-410c-87f3-ddfefc1645a7",
-    "requestedFor": "api-user@vsphere.local"
-}
-
-payload = """{
+{
     "type": "com.vmware.vcac.catalog.domain.request.CatalogItemProvisioningRequest",
     "catalogItemId": "8b0c1cca-2678-470d-ab27-05f7c8a9fc21",
     "requestedFor": "etopin@vsphere.local",
@@ -118,33 +99,3 @@ payload = """{
         }
     }
 }
-"""
-
-headers = {
-    'Accept': "application/json",
-    'Authorization': "Bearer " + token,
-    'Content-Type': "application/json",
-    'User-Agent': "PostmanRuntime/7.15.0",
-    'Host': "cava-n-80-154.eng.vmware.com",
-    'accept-encoding': "gzip, deflate",
-    'content-length': "4125",
-    'Connection': "keep-alive"
-    }
-
-r = requests.request("POST", url, data=payload, headers=headers, params=querystring, verify=False)
-
-locationURL = r.headers['Location']
-
-executionStatus = ""
-while executionStatus != "STOPPED":
-    r = requests.request("GET", locationURL, headers=headers, verify=False)
-    body = r.json()
-    executionStatus = body['executionStatus']
-    phase = body["phase"]
-    print(phase)
-    time.sleep(2)
-
-if phase == "FAILED":
-    raise Exception('FAILED: ' + body['requestCompletion']['completionDetails'])
-
-print(r.text)
