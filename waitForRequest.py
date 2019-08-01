@@ -27,10 +27,12 @@ while executionStatus != "STOPPED":
     body = r.json()
     executionStatus = body["executionStatus"]
     phase = body["phase"]
+    print("\033[1;33;40m")
     print(phase)
+    print("\033[1;37;40m")
     time.sleep(5)
 
 if phase == "FAILED":
-    raise Exception("FAILED: " + body["requestCompletion"]["completionDetails"])
+    raise Exception("\033[1;31;40m" + body["requestCompletion"]["completionDetails"])
     
 print(r.text)

@@ -27,4 +27,4 @@ if 'id' in j :
     f.write(j["id"])
     print((j["id"]))
 else:
-    raise Exception("FAILED: " + json.dumps(j))
+    raise Exception("\033[1;31;40m" + json.dumps(j))

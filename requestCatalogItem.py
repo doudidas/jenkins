@@ -35,8 +35,11 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 r = requests.request("POST", url, data=payload, headers=headers, params=querystring, verify=False)
 
-locationURL = r.headers["Location"]
-
-f = open(".location", "w")
-f.write(locationURL)
-print(locationURL)
+if "location" in r.headers:
+    locationURL = r.headers["Location"]
+    f = open(".location", "w")
+    f.write(locationURL)
+    print(locationURL)
+else:
+    body = r.json()
+    raise Exception("\033[1;31;40m" + json.dumps(body))
