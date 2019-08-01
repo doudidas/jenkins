@@ -8,7 +8,7 @@ pipeline {
     }
     stage('provision VM') {
       steps {
-        sh 'echo ${token}'
+        sh 'echo $token'
       }
     }
   }
