@@ -1,6 +1,9 @@
-token = ''
+
 pipeline {
   agent any
+    environment { 
+        token = ''
+    }
   stages {
     stage('getToken') {
       steps {
