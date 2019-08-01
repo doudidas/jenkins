@@ -4,9 +4,13 @@ import time
 import json
 import urllib3
 
-# Get token and location from arg
-token = sys.argv[1]
-locationURL = sys.argv[2]
+
+# Get Token
+with open(".tokenID") as file:
+    token = file.read()
+# Get location URL
+with open(".location") as file:
+    locationURL = file.read()
 
 headers = {
     "Accept"       : "application/json",
