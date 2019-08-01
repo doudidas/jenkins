@@ -7,7 +7,8 @@ pipeline {
   stages {
     stage('getToken') {
       steps {
-        token = sh(script: 'python getToken.py', returnStdout: true).trim()
+        sh 'python getToken.py'
+        token = readFile('.tokenID').trim()
       }
     }
     stage('provision VM') {

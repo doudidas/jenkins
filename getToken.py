@@ -2,12 +2,12 @@ import requests
 import urllib3
 import json
 
-url = "https://us08-1-vralb.oc.vmware.com/identity/api/tokens"
+url = "https://cava-n-80-154.eng.vmware.com/identity/api/tokens"
 
 payload = {
-    "username": "etopin@vvmware.com",
-    "password": "KpmgSYf45..#ET",
-    "tenant": "Cava"
+    "username": "etopin@vsphere.local",
+    "password": "VMware1!",
+    "tenant": "vsphere.local"
 }
 headers = {
     "Accept": "application/json",
@@ -22,7 +22,8 @@ response = requests.request("POST", url, data=json.dumps(
 
 j = response.json()
 
-if hasattr(j, "id"):
-    print(j["id"])
+if 'id' in j :
+    f = open(".tokenID", "w")
+    f.write(j["id"])   
 else:
     raise Exception("FAILED: " + json.dumps(j))
