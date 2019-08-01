@@ -28,7 +28,7 @@ while executionStatus != "STOPPED":
     executionStatus = body["executionStatus"]
     phase = body["phase"]
     print(phase)
-    time.sleep(2)
+    time.sleep(5)
 
 if phase == "FAILED":
     raise Exception("FAILED: " + body["requestCompletion"]["completionDetails"])
