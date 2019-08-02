@@ -7,6 +7,7 @@
 
 ### Install java SDK 
 
+
 - get Java rpm online (Ex: jdk-11.0.3_linux-x64_bin.rpm)
   - Be carefull java 12 is not yet supported !
 - transfert rmp into offline host
