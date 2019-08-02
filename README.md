@@ -1,5 +1,7 @@
 # Offline Jenkins Configuration
 
+![Diagram](diagram.png?raw=true "Diagram")
+
 1) Install
 2) Configure
 
