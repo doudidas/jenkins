@@ -16,7 +16,7 @@ pipeline {
         sh 'python requestCatalogItem.py ${fqdn} ${centos}'
       }
     }
-    stage('Wait for request') {
+    stage('Wait Provisioning Centos') {
       steps {
         sh 'python waitForRequest.py'
       }
@@ -36,7 +36,7 @@ pipeline {
         sh 'python requestAction.py ${fqdn} ${destroy}'
       }
     }
-    stage('Wait for request') {
+    stage('Wait Destroy Centos') {
       steps {
         sh 'python waitForRequest.py'
       }
