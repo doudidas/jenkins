@@ -1,11 +1,12 @@
-# Setup File
+# Offline Jenkins Configuration
 
 1) Install
 2) Configure
 
 ## Install
 
-### Install java SDK
+### Install java SDK 
+
 
 - get Java rpm online (Ex: jdk-11.0.3_linux-x64_bin.rpm)
   - Be carefull java 12 is not yet supported !
