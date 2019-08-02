@@ -9,7 +9,7 @@ pipeline {
   stages {
     stage('getToken') {
       steps {
-        token = sh 'python getToken.py ${fqdn}'
+        sh 'python getToken.py ${fqdn}'
       }
     }
     stage('provision VM') {
