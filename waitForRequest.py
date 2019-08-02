@@ -32,5 +32,4 @@ while executionStatus != "STOPPED":
 
 if phase == "FAILED":
     raise Exception(body["requestCompletion"]["completionDetails"])
-    
-print(r.text)
+print(r.text())

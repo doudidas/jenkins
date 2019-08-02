@@ -14,7 +14,7 @@ pipeline {
     }
     stage('provision VM') {
       steps {
-        sh 'python requestCatalogItem.py ${fqdn} ${payloadFilePath} ${catalogID} ${businessGroupID}'
+        sh 'python requestCatalogItem.py ${fqdn} ${payloadFilePath}'
       }
     }
     stage('Wait for request') {
