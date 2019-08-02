@@ -1,10 +1,9 @@
 pipeline {
   agent any
   environment {
-    businessGroupID = 'b3a2dc51-5267-410c-87f3-ddfefc1645a7'
-    catalogID       = '8b0c1cca-2678-470d-ab27-05f7c8a9fc21'
-    payloadFilePath = 'payloads/blueprint1.json'
-    fqdn = "cava-n-80-154.eng.vmware.com"
+    fqdn    = "cava-n-80-154.eng.vmware.com"
+    centos  = 'payloads/blueprint1.json'
+    destroy = 'payloads/destroyDeployment.json'
   }
   stages {
     stage('getToken') {
@@ -14,10 +13,25 @@ pipeline {
     }
     stage('provision VM') {
       steps {
-        sh 'python requestCatalogItem.py ${fqdn} ${payloadFilePath} ${catalogID} ${businessGroupID}'
+        sh 'python requestCatalogItem.py ${fqdn} ${centos}'
       }
     }
-    stage('Wait for request') {
+    stage('Wait Provisioning Centos') {
+      steps {
+        sh 'python waitForRequest.py'
+      }
+    }
+    stage('get DeploymentID') {
+      steps {
+        sh 'python getDeploymentFromRequest.py ${fqdn}'
+      }
+    }
+    stage('Destroy VM') {
+      steps {
+        sh 'python requestAction.py ${fqdn} ${destroy}'
+      }
+    }
+    stage('Wait Destroy Centos') {
       steps {
         sh 'python waitForRequest.py'
       }

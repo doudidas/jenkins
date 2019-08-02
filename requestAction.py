@@ -7,23 +7,22 @@ import urllib3
 fqdn              = sys.argv[1]
 pathToPayloadFile = sys.argv[2]
 
+# Get resourceID from cache 
+with open(".tmp/resourceID") as file:
+    resourceID = file.read()
+
 # Get Token from cache
-with open(".tmp/tokenID") as token_file:
-    token = token_file.read()
+with open(".tmp/tokenID") as file:
+    token = file.read()
 
 # Get request body from a JSON file
 with open(pathToPayloadFile) as json_file:
     obj = json.load(json_file)
+    obj["resourceId"] = resourceID
     payload = json.dumps(obj)
 
-
 # Set URL
-url = "https://" + fqdn + "/catalog-service/api/consumer/entitledCatalogItems/" + obj["catalogItemId"] + "/requests"
-
-# Add Query 
-querystring = {
-    "businessGroupId": obj["businessGroupId"],
-}
+url = "https://" + fqdn + "/catalog-service/api/consumer/resources/" + resourceID + "/actions/" + obj["actionId"] + "/requests"
 
 # Set Header
 headers = {
@@ -32,14 +31,14 @@ headers = {
     "Content-Type" : "application/json"
 }
 
-#  disable certificate error: for dev only !
+#  Disable certificate error: for dev only !
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 # Send request
-r = requests.request("POST", url, data=payload, headers=headers, params=querystring, verify=False)
+r = requests.request("POST", url, data=payload, headers=headers, verify=False)
 
 if "location" in r.headers:
-    # Save location url into cache
+    # Save header into cache
     locationURL = r.headers["Location"]
     f = open(".tmp/location", "w")
     f.write(locationURL)

@@ -5,10 +5,11 @@ import json
 import urllib3
 
 
-# Get Token
+# Get Token from cache
 with open(".tmp/tokenID") as file:
     token = file.read()
-# Get location URL
+
+# Get location URL from cache
 with open(".tmp/location") as file:
     locationURL = file.read()
 
@@ -32,5 +33,9 @@ while executionStatus != "STOPPED":
 
 if phase == "FAILED":
     raise Exception(body["requestCompletion"]["completionDetails"])
-    
-print(r.text)
+
+f = open(".tmp/requestID", "w")
+requestID = body["id"]
+f.write(requestID)
+output = json.dumps(body, indent=3)
+print(output)
