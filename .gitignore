@@ -1,3 +1,2 @@
 .vscode
-.tokenID
-.location
+.tmp/*

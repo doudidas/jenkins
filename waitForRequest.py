@@ -32,4 +32,9 @@ while executionStatus != "STOPPED":
 
 if phase == "FAILED":
     raise Exception(body["requestCompletion"]["completionDetails"])
-print(r.text())
+
+f = open(".tmp/requestID", "w")
+requestID = body["id"]
+f.write(requestID)
+output = json.dumps(body, indent=3)
+print(output)
