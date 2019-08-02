@@ -3,41 +3,42 @@ import requests
 import json
 import urllib3
 
-# Get token, catalogID and businessGroupID from arg
+# Get user arguments
 fqdn              = sys.argv[1]
 pathToPayloadFile = sys.argv[2]
 
-
-
-# Get 
+# Get resourceID from cache 
 with open(".tmp/resourceID") as file:
     resourceID = file.read()
+
+# Get Token from cache
+with open(".tmp/tokenID") as file:
+    token = file.read()
 
 # Get request body from a JSON file
 with open(pathToPayloadFile) as json_file:
     obj = json.load(json_file)
     obj["resourceId"] = resourceID
-    operationID = obj["actionId"]
     payload = json.dumps(obj)
 
-url = "https://" + fqdn + "/catalog-service/api/consumer/resources/" + resourceID + "/actions/" + operationID + "/requests"
+# Set URL
+url = "https://" + fqdn + "/catalog-service/api/consumer/resources/" + resourceID + "/actions/" + obj["actionId"] + "/requests"
 
-# Get Token
-with open(".tmp/tokenID") as token_file:
-    token = token_file.read()
-
+# Set Header
 headers = {
     "Accept"       : "application/json",
     "Authorization": "Bearer " + token,
     "Content-Type" : "application/json"
 }
 
-#  disable certificate error: for dev only !
+#  Disable certificate error: for dev only !
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
+# Send request
 r = requests.request("POST", url, data=payload, headers=headers, verify=False)
 
 if "location" in r.headers:
+    # Save header into cache
     locationURL = r.headers["Location"]
     f = open(".tmp/location", "w")
     f.write(locationURL)

@@ -5,10 +5,11 @@ import json
 import urllib3
 
 
-# Get Token
+# Get Token from cache
 with open(".tmp/tokenID") as file:
     token = file.read()
-# Get location URL
+
+# Get location URL from cache
 with open(".tmp/location") as file:
     locationURL = file.read()
 
