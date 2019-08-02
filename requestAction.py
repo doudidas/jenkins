@@ -13,15 +13,11 @@ pathToPayloadFile = sys.argv[2]
 with open(".tmp/resourceID") as file:
     resourceID = file.read()
 
-# Get 
-with open(".tmp/operationID") as file:
-    operationID = file.read()
-
 # Get request body from a JSON file
 with open(pathToPayloadFile) as json_file:
     obj = json.load(json_file)
     obj["resourceId"] = resourceID
-    obj["actionId"] = operationID
+    operationID = obj["actionId"]
     payload = json.dumps(obj)
 
 url = "https://" + fqdn + "/catalog-service/api/consumer/resources/" + resourceID + "/actions/" + operationID + "/requests"

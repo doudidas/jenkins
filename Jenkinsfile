@@ -26,11 +26,6 @@ pipeline {
         sh 'python getDeploymentFromRequest.py ${fqdn}'
       }
     }
-    stage('get resourceOperation') {
-      steps {
-        sh 'python getDeploymentFromRequest.py ${fqdn}'
-      }
-    }
     stage('Destroy VM') {
       steps {
         sh 'python requestAction.py ${fqdn} ${destroy}'
