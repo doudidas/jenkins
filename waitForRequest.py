@@ -6,10 +6,10 @@ import urllib3
 
 
 # Get Token
-with open(".tokenID") as file:
+with open(".tmp/tokenID") as file:
     token = file.read()
 # Get location URL
-with open(".location") as file:
+with open(".tmp/location") as file:
     locationURL = file.read()
 
 headers = {
@@ -27,12 +27,10 @@ while executionStatus != "STOPPED":
     body = r.json()
     executionStatus = body["executionStatus"]
     phase = body["phase"]
-    print("\033[1;33;40m")
     print(phase)
-    print("\033[1;37;40m")
     time.sleep(5)
 
 if phase == "FAILED":
-    raise Exception("\033[1;31;40m" + body["requestCompletion"]["completionDetails"])
+    raise Exception(body["requestCompletion"]["completionDetails"])
     
 print(r.text)

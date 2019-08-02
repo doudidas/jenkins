@@ -4,24 +4,29 @@ import json
 import urllib3
 
 # Get token, catalogID and businessGroupID from arg
-pathToPayloadFile = sys.argv[1]
-catalogID         = sys.argv[2]
-businessGroupID   = sys.argv[3]
+fqdn              = sys.argv[1]
+pathToPayloadFile = sys.argv[2]
 
-url = "https://cava-n-80-154.eng.vmware.com/catalog-service/api/consumer/entitledCatalogItems/" + catalogID + "/requests"
+# Get request body from a JSON file
+with open(pathToPayloadFile) as json_file:
+    obj = json.load(json_file)
+    businessGroupID = obj["businessGroupId"]
+    catalogID = obj["catalogItemId"]
+    payload = json.dumps(obj)
+
+
+
+url = "https://" + fqdn + "/catalog-service/api/consumer/entitledCatalogItems/" + catalogID + "/requests"
 
 querystring = {
     "businessGroupId": businessGroupID,
 }
 
 # Get Token
-with open(".tokenID") as token_file:
+with open(".tmp/tokenID") as token_file:
     token = token_file.read()
 
-# Get request body from a JSON file
-with open(pathToPayloadFile) as json_file:
-    obj = json.load(json_file)
-    payload = json.dumps(obj)
+
 
 
 headers = {
@@ -37,9 +42,9 @@ r = requests.request("POST", url, data=payload, headers=headers, params=querystr
 
 if "location" in r.headers:
     locationURL = r.headers["Location"]
-    f = open(".location", "w")
+    f = open(".tmp/location", "w")
     f.write(locationURL)
     print(locationURL)
 else:
     body = r.json()
-    raise Exception("\033[1;31;40m" + json.dumps(body))
+    raise Exception(json.dumps(body))
