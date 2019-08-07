@@ -11,28 +11,26 @@ pipeline {
     stage("getToken") {
       steps {
         script {
-          ctx.tokenID = sh(returnStdout: true, script: "python getToken.py ${fqdn}")
+          ctx.tokenID = sh(returnStdout: true, script: "python getToken.py ${fqdn}").trim()
         }
       }
     }
     stage("provision VM") {
       steps {
         script {
-          ctx.requestID = sh(returnStdout: true, script: "python requestCatalogItem.py ${fqdn} ${centos} ${ctx.tokenID}")
+          ctx.requestID = sh(returnStdout: true, script: "python requestCatalogItem.py ${fqdn} ${centos} ${ctx.tokenID}").trim()
         }
       }
     }
     stage("Wait Provisioning Centos") {
       steps {
-        sh """
-          python waitForRequest.py  ${fqdn} ${ctx.requestID} ${ctx.tokenID}
-          """
+        sh "python waitForRequest.py  ${fqdn} ${ctx.requestID} ${ctx.tokenID}"
       }
     }
     stage("get DeploymentID") {
       steps {
         script {
-          ctx.deploymentID = sh(returnStdout: true, script: "python getDeploymentFromRequest.py ${fqdn} ${ctx.requestID} ${ctx.tokenID}")
+          ctx.deploymentID = sh(returnStdout: true, script: "python getDeploymentFromRequest.py ${fqdn} ${ctx.requestID} ${ctx.tokenID}").trim()
         }
       }
     }
