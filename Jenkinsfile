@@ -1,14 +1,12 @@
-// def token        = ""
-def requestID    = ""
-def deploymentID = ""
-
 pipeline {
   agent any
   environment {
-    token   = ""
-    fqdn    = "cava-n-80-154.eng.vmware.com"
-    centos  = "payloads/blueprint1.json"
-    destroy = "payloads/destroyDeployment.json"
+    centos       = "payloads/blueprint1.json"
+    deploymentID = ""
+    destroy      = "payloads/destroyDeployment.json"
+    fqdn         = "cava-n-80-154.eng.vmware.com"
+    requestID    = ""
+    token        = ""
   }
   stages {
     stage("getToken") {
@@ -30,7 +28,7 @@ pipeline {
     stage("Wait Provisioning Centos") {
       steps {
         script {
-          sh(script: "python waitForRequest.py ${fqdn} ${requestID} ${token}")
+          sh(script: "python waitForRequest.py ${fqdn} ${token} ${requestID} ")
         }
       }
     }
@@ -50,7 +48,7 @@ pipeline {
     }
     stage("Wait Destroy Centos") {
       steps {
-        sh(script: "python waitForRequest.py ${fqdn} ${requestID} ${token}")
+        sh(script: "python waitForRequest.py ${fqdn} ${token} ${requestID}")
       }
     }
   }

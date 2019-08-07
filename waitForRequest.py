@@ -7,8 +7,9 @@ import urllib3
 
 # Get user arguments
 fqdn      = sys.argv[1]
-requestID = sys.argv[2]
-token     = sys.argv[3]
+token     = sys.argv[2]
+requestID = sys.argv[3]
+
 
 
 locationURL = "https://" + fqdn + "/catalog-service/api/consumer/requests/" + requestID
