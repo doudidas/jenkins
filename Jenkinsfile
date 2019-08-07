@@ -1,13 +1,11 @@
+def centos       = "payloads/blueprint1.json"
+def deploymentID = ""
+def destroy      = "payloads/destroyDeployment.json"
+def fqdn         = "cava-n-80-154.eng.vmware.com"
+def requestID    = ""
+def token        = ""
 pipeline {
   agent any
-  environment {
-    centos       = "payloads/blueprint1.json"
-    deploymentID = ""
-    destroy      = "payloads/destroyDeployment.json"
-    fqdn         = "cava-n-80-154.eng.vmware.com"
-    requestID    = ""
-    token        = ""
-  }
   stages {
     stage("getToken") {
       steps {
