@@ -35,10 +35,9 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 # Send request
 r = requests.request("POST", url, data=payload, headers=headers, params=querystring, verify=False)
 
-j = r.json()
+body = r.json()
 
-if "id" in j.headers:
-    print(j["id"])
+if "id" in body:
+    print(body["id"])
 else:
-    body = r.json()
     raise Exception(json.dumps(body))
