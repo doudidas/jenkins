@@ -27,9 +27,7 @@ pipeline {
     }
     stage("Wait Provisioning Centos") {
       steps {
-        script {
-          sh(script: "python waitForRequest.py ${fqdn} ${token} ${requestID} ")
-        }
+          sh "python waitForRequest.py ${fqdn} ${requestID} ${token}")
       }
     }
     stage("get DeploymentID") {
@@ -48,7 +46,7 @@ pipeline {
     }
     stage("Wait Destroy Centos") {
       steps {
-        sh(script: "python waitForRequest.py ${fqdn} ${token} ${requestID}")
+        sh(script: "python waitForRequest.py ${fqdn} ${requestID} ${token}")
       }
     }
   }
