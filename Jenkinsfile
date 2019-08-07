@@ -1,49 +1,49 @@
-def token        = ''
-def requestID    = ''
-def deploymentID = ''
+def token        = ""
+def requestID    = ""
+def deploymentID = ""
 
 pipeline {
   agent any
   environment {
     fqdn    = "cava-n-80-154.eng.vmware.com"
-    centos  = 'payloads/blueprint1.json'
-    destroy = 'payloads/destroyDeployment.json'
+    centos  = "payloads/blueprint1.json"
+    destroy = "payloads/destroyDeployment.json"
   }
   stages {
-    stage('getToken') {
+    stage("getToken") {
       steps {
         script {
-          token = sh(returnStdout: true, script: 'python getToken.py ${fqdn}')
+          token = sh(returnStdout: true, script: "python getToken.py ${fqdn}")
         }
       }
     }
-    stage('provision VM') {
+    stage("provision VM") {
       steps {
         script {
-          requestID = sh(returnStdout: true, script: 'python requestCatalogItem.py ${fqdn} ${centos} ${token}')
+          requestID = sh(returnStdout: true, script: "python requestCatalogItem.py ${fqdn} ${centos} ${token}")
         }
       }
     }
-    stage('Wait Provisioning Centos') {
+    stage("Wait Provisioning Centos") {
       steps {
         sh "python waitForRequest.py ${fqdn} ${requestID} ${token}"
       }
     }
-    stage('get DeploymentID') {
+    stage("get DeploymentID") {
       steps {
         script {
-          deploymentID = sh(returnStdout: true, script: 'python getDeploymentFromRequest.py ${fqdn} ${requestID} ${token}')
+          deploymentID = sh(returnStdout: true, script: "python getDeploymentFromRequest.py ${fqdn} ${requestID} ${token}")
         }
       }
     }
-    stage('Destroy VM') {
+    stage("Destroy VM") {
       steps {
         script {
-          locationURL = sh(returnStdout: true, script: 'python requestAction.py ${fqdn} ${destroy} ${token}')
+          locationURL = sh(returnStdout: true, script: "python requestAction.py ${fqdn} ${destroy} ${token}")
         }
       }
     }
-    stage('Wait Destroy Centos') {
+    stage("Wait Destroy Centos") {
       steps {
         sh "python waitForRequest.py ${fqdn} ${requestID} ${token}"
       }
