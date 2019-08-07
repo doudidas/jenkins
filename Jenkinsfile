@@ -4,21 +4,21 @@ def destroy      = "payloads/destroyDeployment.json"
 def fqdn         = "cava-n-80-154.eng.vmware.com"
 def requestID    = ""
 def tokenID      = ""
-
+def ctx = {}
 pipeline {
   agent any
   stages {
     stage("getToken") {
       steps {
         script {
-          tokenID = sh(returnStdout: true, script: "python getToken.py ${fqdn}")
+          ctx.tokenID = sh(returnStdout: true, script: "python getToken.py ${fqdn}")
         }
       }
     }
     stage("provision VM") {
       steps {
         script {
-          requestID = sh(returnStdout: true, script: "python requestCatalogItem.py ${fqdn} ${centos} ${tokenID}")
+          requestID = sh(returnStdout: true, script: "python requestCatalogItem.py ${fqdn} ${centos} ${ctx.tokenID}")
         }
       }
     }
