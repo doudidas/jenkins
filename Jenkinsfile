@@ -24,7 +24,7 @@ pipeline {
     }
     stage('Wait Provisioning Centos') {
       steps {
-        sh 'python waitForRequest.py ${locationURL}'
+        sh "python waitForRequest.py ${locationURL}"
       }
     }
     stage('get DeploymentID') {
@@ -41,7 +41,7 @@ pipeline {
     }
     stage('Wait Destroy Centos') {
       steps {
-        sh 'python waitForRequest.py ${locationURL}'
+        sh "python waitForRequest.py ${locationURL}"
       }
     }
   }
