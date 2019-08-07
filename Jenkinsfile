@@ -24,7 +24,7 @@ pipeline {
     }
     stage("Wait Provisioning Centos") {
       steps {
-        sh "python waitForRequest.py ${fqdn} ${ctx.requestID} ${ctx.tokenID}"
+        sh "python waitForRequest.py ${ctx.tokenID} ${fqdn} ${ctx.requestID} "
       }
     }
     stage("get DeploymentID") {
