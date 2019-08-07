@@ -38,6 +38,6 @@ r = requests.request("POST", url, data=payload, headers=headers, params=querystr
 body = r.json()
 
 if "id" in body:
-    print(body["id"])
+    print(body["id"].strip())
 else:
     raise Exception(json.dumps(body))
