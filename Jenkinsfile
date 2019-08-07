@@ -1,10 +1,11 @@
-def token        = ""
+// def token        = ""
 def requestID    = ""
 def deploymentID = ""
 
 pipeline {
   agent any
   environment {
+    token   = ""
     fqdn    = "cava-n-80-154.eng.vmware.com"
     centos  = "payloads/blueprint1.json"
     destroy = "payloads/destroyDeployment.json"
