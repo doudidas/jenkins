@@ -36,7 +36,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 r = requests.request("POST", url, data=payload, headers=headers, params=querystring, verify=False)
 
 
-if r.status_code == 201 & 'location' in r.headers:
+if (r.status_code == 201) and ('location' in r.headers):
     id = r.headers["location"].partition("requests/")[2]
     print(id)
 else:
