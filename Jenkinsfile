@@ -18,26 +18,26 @@ pipeline {
     stage("provision VM") {
       steps {
         script {
-          requestID = sh(returnStdout: true, script: "python requestCatalogItem.py ${fqdn} ${centos} ${ctx.tokenID}")
+          ctx.requestID = sh(returnStdout: true, script: "python requestCatalogItem.py ${fqdn} ${centos} ${ctx.tokenID}")
         }
       }
     }
     stage("Wait Provisioning Centos") {
       steps {
-        sh "python waitForRequest.py ${fqdn} ${requestID} ${tokenID}"
+        sh "python waitForRequest.py ${fqdn} ${ctx.requestID} ${ctx.tokenID}"
       }
     }
     stage("get DeploymentID") {
       steps {
         script {
-          deploymentID = sh(returnStdout: true, script: "python getDeploymentFromRequest.py ${fqdn} ${requestID} ${tokenID}")
+          ctx.deploymentID = sh(returnStdout: true, script: "python getDeploymentFromRequest.py ${fqdn} ${ctx.requestID} ${ctx.tokenID}")
         }
       }
     }
     stage("Destroy VM") {
       steps {
         script {
-          locationURL = sh(returnStdout: true, script: "python requestAction.py ${fqdn} ${destroy} ${tokenID}")
+          locationURL = sh(returnStdout: true, script: "python requestAction.py ${fqdn} ${ctx.deploymentID} ${destroy} ${tokenID}")
         }
       }
     }
