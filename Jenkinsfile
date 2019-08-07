@@ -39,7 +39,7 @@ pipeline {
     stage("Destroy VM") {
       steps {
         script {
-          def t = token
+          token = sh(returnStdout: true, script: "python getToken.py ${fqdn}")
           locationURL = sh(returnStdout: true, script: "python requestAction.py ${fqdn} ${destroy} ${t}")
         }
       }
