@@ -18,7 +18,7 @@ pipeline {
     stage('provision VM') {
       steps {
         script {
-          token = sh(returnStdout: true, script: 'python requestCatalogItem.py ${fqdn} ${centos}')
+          locationURL = sh(returnStdout: true, script: 'python requestCatalogItem.py ${fqdn} ${centos}')
         }
       }
     }
@@ -35,7 +35,7 @@ pipeline {
     stage('Destroy VM') {
       steps {
         script {
-          token = sh(returnStdout: true, script: 'python requestAction.py ${fqdn} ${destroy}')
+          locationURL = sh(returnStdout: true, script: 'python requestAction.py ${fqdn} ${destroy}')
         }
       }
     }
