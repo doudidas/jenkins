@@ -14,6 +14,7 @@ pipeline {
       steps {
         script {
           token = sh(returnStdout: true, script: "python getToken.py ${fqdn}")
+          echo "${token}"
         }
       }
     }
@@ -21,12 +22,15 @@ pipeline {
       steps {
         script {
           requestID = sh(returnStdout: true, script: "python requestCatalogItem.py ${fqdn} ${centos} ${token}")
+          echo "${requestID}"
         }
       }
     }
     stage("Wait Provisioning Centos") {
       steps {
-        sh(script: "python waitForRequest.py ${fqdn} ${requestID} ${token}")
+        script {
+          sh(script: "python waitForRequest.py ${fqdn} ${requestID} ${token}")
+        }
       }
     }
     stage("get DeploymentID") {
