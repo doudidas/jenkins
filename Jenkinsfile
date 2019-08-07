@@ -3,51 +3,48 @@ def deploymentID = ""
 def destroy      = "payloads/destroyDeployment.json"
 def fqdn         = "cava-n-80-154.eng.vmware.com"
 def requestID    = ""
-def token        = ""
+def tokenID      = ""
+
 pipeline {
   agent any
   stages {
     stage("getToken") {
       steps {
         script {
-          token = sh(returnStdout: true, script: "python getToken.py ${fqdn}")
-          echo "${token}"
+          tokenID = sh(returnStdout: true, script: "python getToken.py ${fqdn}")
         }
       }
     }
     stage("provision VM") {
       steps {
         script {
-          requestID = sh(returnStdout: true, script: "python requestCatalogItem.py ${fqdn} ${centos} ${token}")
+          requestID = sh(returnStdout: true, script: "python requestCatalogItem.py ${fqdn} ${centos} ${tokenID}")
         }
       }
     }
     stage("Wait Provisioning Centos") {
       steps {
-        script {
-          token = sh(returnStdout: true, script: "python getToken.py ${fqdn}")
-          sh(returnStdout: true, script: "python waitForRequest.py ${fqdn} ${requestID} ${token}")
-        }
+        sh 'python waitForRequest.py ${fqdn} ${requestID} ${tokenID}'
       }
     }
     stage("get DeploymentID") {
       steps {
         script {
-          deploymentID = sh(returnStdout: true, script: "python getDeploymentFromRequest.py ${fqdn} ${requestID} ${token}")
+          deploymentID = sh(returnStdout: true, script: "python getDeploymentFromRequest.py ${fqdn} ${requestID} ${tokenID}")
         }
       }
     }
     stage("Destroy VM") {
       steps {
         script {
-          locationURL = sh(returnStdout: true, script: "python requestAction.py ${fqdn} ${destroy} ${token}")
+          locationURL = sh(returnStdout: true, script: "python requestAction.py ${fqdn} ${destroy} ${tokenID}")
         }
       }
     }
     stage("Wait Destroy Centos") {
       steps {
         script {
-          sh(returnStdout: true, script: "python waitForRequest.py ${fqdn} ${requestID} ${token}")
+          sh(returnStdout: true, script: "python waitForRequest.py ${fqdn} ${requestID} ${tokenID}")
         }
       }
     }
