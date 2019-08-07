@@ -1,5 +1,7 @@
-def token = ''
-def locationURL = ''
+def token        = ''
+def requestID    = ''
+def deploymentID = ''
+
 pipeline {
   agent any
   environment {
@@ -18,30 +20,32 @@ pipeline {
     stage('provision VM') {
       steps {
         script {
-          locationURL = sh(returnStdout: true, script: 'python requestCatalogItem.py ${fqdn} ${centos}')
+          requestID = sh(returnStdout: true, script: 'python requestCatalogItem.py ${fqdn} ${centos} ${token}')
         }
       }
     }
     stage('Wait Provisioning Centos') {
       steps {
-        sh "python waitForRequest.py ${locationURL}"
+        sh "python waitForRequest.py ${fqdn} ${requestID} ${token}"
       }
     }
     stage('get DeploymentID') {
       steps {
-        sh 'python getDeploymentFromRequest.py ${fqdn}'
+        script {
+          deploymentID = sh(returnStdout: true, script: 'python getDeploymentFromRequest.py ${fqdn} ${requestID} ${token}')
+        }
       }
     }
     stage('Destroy VM') {
       steps {
         script {
-          locationURL = sh(returnStdout: true, script: 'python requestAction.py ${fqdn} ${destroy}')
+          locationURL = sh(returnStdout: true, script: 'python requestAction.py ${fqdn} ${destroy} ${token}')
         }
       }
     }
     stage('Wait Destroy Centos') {
       steps {
-        sh "python waitForRequest.py ${locationURL}"
+        sh "python waitForRequest.py ${fqdn} ${requestID} ${token}"
       }
     }
   }

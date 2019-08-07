@@ -5,16 +5,13 @@ import json
 import urllib3
 
 
-# Get Token from cache
-with open(".tmp/tokenID") as file:
-    token = file.read()
+# Get user arguments
+fqdn      = sys.argv[1]
+requestID = sys.argv[2]
+token     = sys.argv[3]
 
-# # Get location URL from cache
-# with open(".tmp/location") as file:
-#     locationURL = file.read()
 
-    # Get user arguments
-locationURL = sys.argv[1]
+locationURL = "https://" + fqdn + "/catalog-service/api/consumer/requests/" + requestID
 
 headers = {
     "Accept"       : "application/json",
@@ -31,14 +28,9 @@ while executionStatus != "STOPPED":
     body = r.json()
     executionStatus = body["executionStatus"]
     phase = body["phase"]
-    print(phase)
     time.sleep(5)
-
 if phase == "FAILED":
     raise Exception(body["requestCompletion"]["completionDetails"])
 
-f = open(".tmp/requestID", "w")
 requestID = body["id"]
-f.write(requestID)
-output = json.dumps(body, indent=3)
-print(output)
+print(requestID)
