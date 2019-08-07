@@ -4,40 +4,39 @@ def destroy      = "payloads/destroyDeployment.json"
 def fqdn         = "cava-n-80-154.eng.vmware.com"
 def requestID    = ""
 def tokenID      = ""
-def ctx = {}
 pipeline {
   agent any
   stages {
     stage("getToken") {
       steps {
         script {
-          ctx.tokenID = sh(returnStdout: true, script: "python getToken.py ${fqdn}").trim()
+          tokenID = sh(returnStdout: true, script: "python getToken.py ${fqdn}").trim()
         }
       }
     }
     stage("provision VM") {
       steps {
         script {
-          ctx.requestID = sh(returnStdout: true, script: "python requestCatalogItem.py ${fqdn} ${centos} ${ctx.tokenID}").trim()
+          requestID = sh(returnStdout: true, script: "python requestCatalogItem.py ${fqdn} ${centos} ${tokenID}").trim()
         }
       }
     }
     stage("Wait Provisioning Centos") {
       steps {
-        sh "python waitForRequest.py  ${fqdn} ${ctx.requestID} ${ctx.tokenID}"
+        sh "python waitForRequest.py  ${fqdn} ${requestID} ${tokenID}"
       }
     }
     stage("get DeploymentID") {
       steps {
         script {
-          ctx.deploymentID = sh(returnStdout: true, script: "python getDeploymentFromRequest.py ${fqdn} ${ctx.requestID} ${ctx.tokenID}").trim()
+          deploymentID = sh(returnStdout: true, script: "python getDeploymentFromRequest.py ${fqdn} ${requestID} ${tokenID}").trim()
         }
       }
     }
     stage("Destroy VM") {
       steps {
         script {
-          locationURL = sh(returnStdout: true, script: "python requestAction.py ${fqdn} ${ctx.deploymentID} ${destroy} ${tokenID}")
+          requestID = sh(returnStdout: true, script: "python requestAction.py ${fqdn} ${deploymentID} ${destroy} ${tokenID}").trim()
         }
       }
     }
