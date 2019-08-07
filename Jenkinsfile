@@ -25,6 +25,7 @@ pipeline {
     stage("Wait Provisioning Centos") {
       steps {
         script {
+          token = sh(returnStdout: true, script: "python getToken.py ${fqdn}")
           sh(returnStdout: true, script: "python waitForRequest.py ${fqdn} ${requestID} ${token}")
         }
       }
@@ -39,8 +40,7 @@ pipeline {
     stage("Destroy VM") {
       steps {
         script {
-          token = sh(returnStdout: true, script: "python getToken.py ${fqdn}")
-          locationURL = sh(returnStdout: true, script: "python requestAction.py ${fqdn} ${destroy} ${t}")
+          locationURL = sh(returnStdout: true, script: "python requestAction.py ${fqdn} ${destroy} ${token}")
         }
       }
     }
