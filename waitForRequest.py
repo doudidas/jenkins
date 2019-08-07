@@ -9,9 +9,12 @@ import urllib3
 with open(".tmp/tokenID") as file:
     token = file.read()
 
-# Get location URL from cache
-with open(".tmp/location") as file:
-    locationURL = file.read()
+# # Get location URL from cache
+# with open(".tmp/location") as file:
+#     locationURL = file.read()
+
+    # Get user arguments
+locationURL = sys.argv[1]
 
 headers = {
     "Accept"       : "application/json",
