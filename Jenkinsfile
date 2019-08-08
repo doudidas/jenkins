@@ -7,6 +7,10 @@ def tokenID      = ""
 pipeline {
   agent any
   stages {
+    stage("Set environment")
+      steps {
+        branch = sh "git branch | sed -n '/\* /s///p'"
+      }
     stage("getToken") {
       steps {
         script {
