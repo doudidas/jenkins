@@ -6,6 +6,7 @@ def requestID    = ""
 def tokenID      = ""
 pipeline {
   agent any
+  triggers { cron('@midnight')}
   stages {
     stage("getToken") {
       steps {
